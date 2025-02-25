@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FastAPI + HTMX Memo App</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- HTMX -->
+    <script
+      src="https://unpkg.com/htmx.org@2.0.0"
+      integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <!-- カード風レイアウト -->
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+      <header class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">📌 Memo APP</h1>
+      </header>
+
+      <!-- メモ追加フォーム -->
+      <section>
+        <form
+          hx-post="/memos"
+          hx-target="#memos"
+          hx-swap="innerHTML"
+          hx-on:htmx:after-request="this.reset()"
+          class="flex gap-2"
+        >
+          <input
+            type="text"
+            name="memo"
+            placeholder="Create your memo..."
+            required
+            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:ring focus:ring-blue-300 outline-none"
+          />
+          <button
+            type="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+          >
+            Add
+          </button>
+        </form>
+      </section>
+
+      <!-- メモ一覧 -->
+      <section class="mt-6">
+        <h2 class="text-lg font-semibold text-gray-700 mb-2">📝 メモ一覧</h2>
+        <ul
+          id="memos"
+          hx-get="/memos"
+          hx-swap="innerHTML"
+          hx-trigger="load"
+          class="space-y-2"
+        ></ul>
+      </section>
+    </div>
+  </body>
+</html>

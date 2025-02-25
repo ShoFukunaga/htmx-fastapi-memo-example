@@ -1,0 +1,34 @@
+{% for memo in memos %}
+<li
+  class="flex items-center justify-between bg-gray-100 p-2 rounded-lg shadow-md"
+>
+  <input
+    name="text"
+    value="{{ memo.text }}"
+    class="flex-1 px-2 py-1 border-none bg-transparent focus:ring-0 {% if memo.done %} line-through text-gray-400 {% endif %}"
+    {%
+    if
+    memo.done
+    %}disabled="true"
+    {%
+    endif
+    %}
+    hx-put="/memos/{{ memo.id }}"
+    hx-target="#memos"
+    hx-swap="innerHTML"
+    hx-trigger="keyup changed delay:250ms"
+  />
+
+  <button
+    hx-post="/memos/{{ memo.id }}/delete"
+    hx-target="#memos"
+    hx-swap="innerHTML"
+    title="Delete memo"
+    class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition flex items-center justify-center w-8 h-8"
+  >
+    ✖
+  </button>
+</li>
+{% endfor %} {% if not memos %}
+<li class="text-gray-500">メモないよ</li>
+{% endif %}
